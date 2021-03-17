@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { findAllInRenderedTree } from 'react-dom/test-utils'
-import Highlight from 'react-highlight.js'
 import './App.css'
 
 function hue2rgb(p: number, q: number, t: number) {
