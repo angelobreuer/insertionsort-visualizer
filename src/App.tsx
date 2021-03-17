@@ -1,41 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './App.css'
-
-function hue2rgb(p: number, q: number, t: number) {
-  if (t < 0) t += 1
-  if (t > 1) t -= 1
-  if (t < 1 / 6) return p + (q - p) * 6 * t
-  if (t < 1 / 2) return q
-  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
-  return p
-}
-
-function hslToRgb(h: number, s: number, l: number) {
-  var r, g, b
-
-  if (s === 0) {
-    r = g = b = l // achromatic
-  } else {
-    var q = l < 0.5 ? l * (1 + s) : l + s - l * s
-    var p = 2 * l - q
-
-    r = hue2rgb(p, q, h + 1 / 3)
-    g = hue2rgb(p, q, h)
-    b = hue2rgb(p, q, h - 1 / 3)
-  }
-
-  return `rgb(${r * 255},${g * 255},${b * 255})`
-}
-
-function Bar(props: { value: number, width: number, highlight: boolean }) {
-  const style = {
-    backgroundColor: props.highlight ? '#fff' : hslToRgb(props.value, 1, .5),
-    height: 200 * props.value,
-    width: props.width
-  }
-
-  return <div className='bar' style={style}></div>
-}
+import Bar from './components/Bar'
+import Debugger from './components/Debugger'
+import PauseButton from './components/PauseButton'
+import SpeedSlider from './components/SpeedSlider'
 
 function generateValues(count: number) {
   var arr: number[] = []
@@ -99,31 +67,6 @@ function* insertionSort(array: number[]): Generator<StateInfo> {
   }
 }
 
-function Debugger(props: { line: number }) {
-  return <pre style={{ color: '#fff' }}>
-    <code>
-      {code.split('\n').map((x, i) => <div
-        key={`line-${i}`}
-        className={props.line === i + 1 ? 'line-highlight' : 'no-line-highlight'}>{i + 1} {x.length ? x : <br />}</div>)}
-    </code>
-  </pre>
-}
-
-function PauseButton(props: { onToggle: (x: any) => void, paused: boolean }) {
-  return <button onClick={props.onToggle}>{props.paused ? 'Weiter' : 'Stop'}</button>
-}
-
-function SpeedSlider(props: { onChange: (x: number) => void }) {
-  return <div>
-    <input
-      className="speed-slider"
-      type="range"
-      onChange={x => props.onChange(x.target.valueAsNumber)}
-      min={0}
-      step={.1}
-      max={5}></input>
-  </div>
-}
 
 const generator = insertionSort(generateValues(100))
 
@@ -178,7 +121,7 @@ class App extends React.Component<{}, State>{
       <div className="app">
         <SpeedSlider onChange={x => this.setState({ ...this.state, config: { ...this.state.config, speed: x } })} />
         <PauseButton onToggle={x => this.setState({ ...this.state, config: { ...this.state.config, pause: !this.state.config.pause } })} paused={this.state.config.pause} />
-        <Debugger line={this.state.line} />
+        <Debugger line={this.state.line} code={code} />
         <div className="container">
           {this.state.array.map((value, index) => <Bar highlight={index === this.state.index || index === this.state.index2} value={value} width={widthPerTile} />)}
         </div>
