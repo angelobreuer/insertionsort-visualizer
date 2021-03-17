@@ -6,6 +6,13 @@ body {
   overflow: hidden;
 }
 
+.hud {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #ffffff;
+}
+
 .bar {
   margin-bottom: 30px;
 }
