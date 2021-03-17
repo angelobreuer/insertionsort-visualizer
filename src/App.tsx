@@ -34,9 +34,7 @@ function Bar(props: { value: number, width: number, highlight: boolean }) {
     width: props.width
   }
 
-  return <div className='bar' style={style}>
-
-  </div>
+  return <div className='bar' style={style}></div>
 }
 
 function generateValues(count: number) {
@@ -65,6 +63,11 @@ const code = `for (int i = 1; i <= array.length - 1; i++)
     // Zwischengespeicherte Zahl erneut schreiben an ihrem eigentlichen Platz
     array[j + 1] = temp;
 }`
+
+interface Config {
+  speed: number,
+  pause: boolean
+}
 
 interface StateInfo {
   line: number,
@@ -106,6 +109,22 @@ function Debugger(props: { line: number }) {
   </pre>
 }
 
+function PauseButton(props: { onToggle: (x: any) => void, paused: boolean }) {
+  return <button onClick={props.onToggle}>{props.paused ? 'Weiter' : 'Stop'}</button>
+}
+
+function SpeedSlider(props: { onChange: (x: number) => void }) {
+  return <div>
+    <input
+      className="speed-slider"
+      type="range"
+      onChange={x => props.onChange(x.target.valueAsNumber)}
+      min={0}
+      step={.1}
+      max={5}></input>
+  </div>
+}
+
 const generator = insertionSort(generateValues(100))
 
 interface State {
@@ -114,15 +133,15 @@ interface State {
   generator: Generator<StateInfo>,
   index: number,
   index2: number,
+  config: Config
 }
 
 function stateFactory(count: number) {
   const array = generateValues(count)
-  return { array, line: 0, generator: insertionSort(array), index: 0, index2: 0 }
+  return { array, line: 0, generator: insertionSort(array), index: 0, index2: 0, config: { pause: false, speed: 1 } }
 }
 
 const defaultState = stateFactory(100)
-const slowDownFactor = 2
 
 class App extends React.Component<{}, State>{
   constructor(props: {}) {
@@ -135,6 +154,11 @@ class App extends React.Component<{}, State>{
   }
 
   tick() {
+    if (this.state.config.pause) {
+      setTimeout(this.tick.bind(this), 100)
+      return
+    }
+
     const result = generator.next()
     const info: StateInfo = result.value
 
@@ -142,8 +166,8 @@ class App extends React.Component<{}, State>{
       return
     }
 
-    this.setState({ generator: this.state.generator, ...info })
-    setTimeout(this.tick.bind(this), info.delay * slowDownFactor)
+    this.setState({ generator: this.state.generator, ...info, config: this.state.config })
+    setTimeout(this.tick.bind(this), info.delay * (3 - Math.max(.1, Math.min(5, this.state.config.speed))))
   }
 
   render() {
@@ -152,6 +176,8 @@ class App extends React.Component<{}, State>{
 
     return (
       <div className="app">
+        <SpeedSlider onChange={x => this.setState({ ...this.state, config: { ...this.state.config, speed: x } })} />
+        <PauseButton onToggle={x => this.setState({ ...this.state, config: { ...this.state.config, pause: !this.state.config.pause } })} paused={this.state.config.pause} />
         <Debugger line={this.state.line} />
         <div className="container">
           {this.state.array.map((value, index) => <Bar highlight={index === this.state.index || index === this.state.index2} value={value} width={widthPerTile} />)}
