@@ -39,7 +39,7 @@ function stateFactory(count: number, algorithm: SortAlgorithm) {
   return { array, line: 0, generator: algorithm.sort(array), algorithm, index: 0, index2: 0, config: { pause: false, speed: 1 } }
 }
 
-const defaultState = stateFactory(100, BubbleSort)
+const defaultState = stateFactory(100, InsertionSort)
 
 class App extends React.Component<{}, State>{
   constructor(props: {}) {
