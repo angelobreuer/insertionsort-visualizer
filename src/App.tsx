@@ -1,5 +1,5 @@
 import React from 'react'
-import BubbleSort from './algorithms/BubbleSort'
+import InsertionSort from './algorithms/InsertionSort'
 import SortAlgorithm, { StateInfo } from './algorithms/SortAlgorithm'
 import './App.css'
 import AlgorithmSelector from './components/AlgorithmSelector'

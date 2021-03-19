@@ -17,7 +17,6 @@ function* algorithm(array: number[]): Generator<StateInfo> {
     }
 }
 
-
 const code = `// Die For-Schleife läuft von dem ersten Element/Index bis zum vorletzen Index durch.
 for (int i = 0; i < zahlenfeld.length - 1; i++)
 {
