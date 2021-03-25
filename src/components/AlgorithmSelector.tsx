@@ -1,5 +1,6 @@
 import BubbleSort from "../algorithms/BubbleSort"
 import BubbleSortOpt from "../algorithms/BubbleSortOpt"
+import BucketSort from "../algorithms/BucketSort"
 import InsertionSort from "../algorithms/InsertionSort"
 import QuickSort from "../algorithms/QuickSort"
 import SelectionSort from "../algorithms/SelectionSort"
@@ -12,7 +13,8 @@ const algorithms = [
     BubbleSortOpt,
     SelectionSort,
     SimpleSort,
-    QuickSort
+    QuickSort,
+    BucketSort,
 ]
 
 export default function AlgorithmSelector(props: { onChange: (algorithm: SortAlgorithm) => void }) {
