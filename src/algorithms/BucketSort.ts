@@ -2,34 +2,33 @@ import SortAlgorithm, { StateInfo } from "./SortAlgorithm"
 
 function* algorithm(array: number[]): Generator<StateInfo> {
     const buckets: number[][] = []
+    const originalArray = [...array]
 
-    const hashFunc = (value: number) => Math.sqrt(value)
-    const update = () => array = ([] as number[]).concat(...buckets)
+    const hashFunc = (value: number) => Math.floor(value * 10)
+    const update = () => array = buckets.reduce((a, b) => a.concat(b), [])
 
     let maxValue = 0
-    array.forEach(x => maxValue < x ? maxValue = x : x)
+    array.forEach(x => x > maxValue ? maxValue = x : x)
 
-    for (let i = 0; i < maxValue; i++) {
+    for (let i = 0; i < 10; i++) {
         buckets.push([])
     }
 
-    update()
+    yield { array: update(), delay: 30, index: -1, index2: -1, line: 0 }
 
     let index = 0
 
-    for (let x of array) {
-        yield { array, delay: 30, index: index++, index2: -1, line: 24 }
+    for (let x of originalArray) {
+        yield { array: update(), delay: 30, index: index++, index2: -1, line: 24 }
         let hash = hashFunc(x)
         buckets[hash].push(x)
-        update()
-        yield { array, delay: 30, index: index++, index2: -1, line: 25 }
+        yield { array: update(), delay: 30, index: index++, index2: -1, line: 25 }
     }
 
     for (let bucket of buckets) {
-        yield { array, delay: 30, index: index++, index2: -1, line: 48 }
-        bucket.sort();
-        update()
-        yield { array, delay: 30, index: index++, index2: -1, line: 49 }
+        yield { array: update(), delay: 200, index: index++, index2: -1, line: 48 }
+        bucket.sort()
+        yield { array: update(), delay: 200, index: index++, index2: -1, line: 49 }
     }
 }
 
