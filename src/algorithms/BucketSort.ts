@@ -19,16 +19,17 @@ function* algorithm(array: number[]): Generator<StateInfo> {
     let index = 0
 
     for (let x of originalArray) {
-        yield { array: update(), delay: 30, index: index++, index2: -1, line: 24 }
+        yield { array: update(), delay: 30, index: index++, index2: -1, line: 3 }
         let hash = hashFunc(x)
         buckets[hash].push(x)
-        yield { array: update(), delay: 30, index: index++, index2: -1, line: 25 }
+        yield { array: update(), delay: 30, index: index++, index2: -1, line: 4 }
+        yield { array: update(), delay: 30, index: index++, index2: -1, line: 5 }
     }
 
     for (let bucket of buckets) {
-        yield { array: update(), delay: 200, index: index++, index2: -1, line: 48 }
+        yield { array: update(), delay: 200, index: index++, index2: -1, line: 10 }
         bucket.sort()
-        yield { array: update(), delay: 200, index: index++, index2: -1, line: 49 }
+        yield { array: update(), delay: 200, index: index++, index2: -1, line: 11 }
     }
 }
 
