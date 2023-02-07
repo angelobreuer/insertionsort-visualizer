@@ -8,12 +8,17 @@ const padLine = (index: number) => {
     return index
 }
 
-export default function Debugger(props: { line: number, code: string }) {
-    return <pre style={{ color: '#fff' }}>
+function Line({ highlight, number, content, }: { highlight: boolean, number: number, content: string, }) {
+    return <div key={`line-${number}`} className={highlight ? "bg-red-400" : ''}>
+        <span className="mr-4 inline-block">{padLine(number)}</span>
+        {content.length ? content : <br />}
+    </div>
+}
+
+export default function Debugger({ line, code }: { line: number, code: string }) {
+    return <pre className="text-white font-mono">
         <code>
-            {props.code.split('\n').map((x, i) => <div
-                key={`line-${i}`}
-                className={props.line === i + 1 ? 'line-highlight' : 'no-line-highlight'}>{padLine(i)} {x.length ? x : <br />}</div>)}
+            {code.split('\n').map((content, index) => <Line key={index} content={content} number={index} highlight={index + 1 === line} />)}
         </code>
     </pre>
 }

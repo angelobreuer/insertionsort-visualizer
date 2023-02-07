@@ -1,11 +1,14 @@
-export default function SpeedSlider(props: { onChange: (x: number) => void }) {
-    return <div>
+export default function SpeedSlider({ onChange, }: { onChange: (speed: number) => void }) {
+    return <div className="my-4">
+        <p className="text-white">Geschwindigkeit: </p>
         <input
             className="speed-slider"
+            style={{ width: '100%', maxWidth: '600px' }}
             type="range"
-            onChange={x => props.onChange(x.target.valueAsNumber)}
-            min={.1}
+            onChange={x => onChange(x.target.valueAsNumber)}
+            min={1}
             step={.1}
-            max={10}></input>
+            defaultValue={1}
+            max={5}></input>
     </div>
 }

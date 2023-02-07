@@ -21,7 +21,7 @@ export default function AlgorithmSelector(props: { onChange: (algorithm: SortAlg
     return <div>
         <span style={{ color: '#fff' }}>Algorithmus: </span>
         <select onChange={x => props.onChange(algorithms[parseInt(x.target.value)])}>
-            {algorithms.map((x, i) => <option value={i}>{x.name}</option>)}
+            {algorithms.map((x, i) => <option key={i} value={i}>{x.name}</option>)}
         </select>
     </div>
 }

@@ -31,5 +31,5 @@ export default function Bar(props: { value: number, width: number, highlight: bo
         width: props.width
     }
 
-    return <div className='bar' style={style}></div>
+    return <div className='mb-8' style={style}></div>
 }
